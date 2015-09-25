@@ -1,0 +1,113 @@
+/**
+ * @ngdoc function
+ * @name yoExemploApp.controller:AboutCtrl
+ * @description
+ * # AboutCtrl
+ * Controller of the yoExemploApp
+ */
+app.controller('TelaController', ['$scope', '$http', function ($scope, $http){
+        $scope.tela = {};
+        $scope.telas = [];
+        $scope.btnSalvar = 'save';
+
+        $scope.getTelas = function() {
+            $http.get('tela/all').
+                success(function(data, status, headers, config) {
+                    $scope.telas = data;
+                });
+        };
+
+        $scope.getTelas();
+
+        $scope.save = function() {
+                    $http({
+                       method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
+                       url     : $scope.btnSalvar == 'save' ? 'tela' : 'tela/'+ $scope.tela.id,
+                       data    : jQuery.param($scope.tela) ,  // pass in data as strings
+                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                    }).
+                    success(function(response){
+                        $scope.telas = {};
+                        location.reload();
+                    }).
+                    error(function(response){
+                       alert('Incomplete Form');
+                    });
+                 }
+
+        $scope.editar = function(id) {
+                    $scope.tela = $scope.telas[id];
+                    $scope.btnSalvar = 'edit';
+                 }
+
+        $scope.delete = function(id) {
+                       $http
+                            .delete('tela/'+id)
+                            .success(function(data){
+                              location.reload();
+                            })
+                            .error(function(data) {
+                              alert('Unable to delete');
+                           });
+                }
+  }]);
+
+app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http){
+        $scope.tela = {};
+        $scope.telas = [];
+        $scope.btnSalvar = 'save';
+
+        $scope.getTelas = function(id) {
+            $http.get('passotela/allbyid/'+id).
+                success(function(data, status, headers, config) {
+                    $scope.telas = data;
+                });
+        };
+
+        $scope.getAllTelas = function() {
+            $http.get('tela/all').
+                success(function(data, status, headers, config) {
+                    $scope.selectTelas = {
+                        repeatSelect: null,
+                        availableOptions: data
+                       };
+                });
+        };
+
+        $scope.getAllTelas();
+        $scope.getTelas($scope.passo.id);
+
+        $scope.save = function() {
+            $scope.tela.passo_id = $scope.passo.id;
+            $scope.tela.tela_id = $scope.selectTelas.repeatSelect;
+                    $http({
+                       method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
+                       url     : $scope.btnSalvar == 'save' ? 'passotela' : 'passotela/'+ $scope.mensagem.id,
+                       data    : jQuery.param($scope.tela) ,  // pass in data as strings
+                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                    }).
+                    success(function(response){
+                        $scope.mensagems = {};
+                        location.reload();
+                    }).
+                    error(function(response){
+                       alert('Incomplete Form');
+                    });
+                 }
+
+        $scope.editar = function(id) {
+                    $scope.tela = $scope.mensagems[id];
+                    $scope.btnSalvar = 'edit';
+                 }
+
+        $scope.delete = function(passo_id, tela_id) {
+                       $http
+                            .delete('passotela/'+passo_id+'/'+tela_id)
+                            .success(function(data){
+                              location.reload();
+                            })
+                            .error(function(data) {
+                              alert('Unable to delete');
+                           });
+                }
+  }]);

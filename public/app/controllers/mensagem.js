@@ -1,0 +1,114 @@
+/**
+ * @ngdoc function
+ * @name yoExemploApp.controller:AboutCtrl
+ * @description
+ * # AboutCtrl
+ * Controller of the yoExemploApp
+ */
+app.controller('MensagemController', ['$scope', '$http', function ($scope, $http){
+        $scope.mensagem = {};
+        $scope.mensagems = [];
+        $scope.btnSalvar = 'save';
+
+        $scope.getMensagens = function(){
+            $http.get('mensagem/all').
+                success(function(data, status, headers, config) {
+                    $scope.mensagems = data;
+                });
+        };
+
+        $scope.getMensagens();
+
+        $scope.save = function() {
+                    $http({
+                       method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
+                       url     : $scope.btnSalvar == 'save' ? 'mensagem' : 'mensagem/'+ $scope.mensagem.id,
+                       data    : jQuery.param($scope.mensagem) ,  // pass in data as strings
+                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                    }).
+                    success(function(response){
+                        $scope.mensagems = {};
+                        location.reload();
+                    }).
+                    error(function(response){
+                       alert('Incomplete Form');
+                    });
+                 }
+
+        $scope.editar = function(id) {
+                    $scope.mensagem = $scope.mensagems[id];
+                    $scope.btnSalvar = 'edit';
+                 }
+
+        $scope.delete = function(id) {
+                       $http
+                            .delete('mensagem/'+id)
+                            .success(function(data){
+                              location.reload();
+                            })
+                            .error(function(data) {
+                              alert('Unable to delete');
+                           });
+                }
+  }]);
+
+app.controller('MensagemDocController', ['$scope', '$http', function ($scope, $http){
+        $scope.passoMensagem = {};
+        $scope.passoMensagens = [];
+        $scope.btnSalvar = 'save';
+
+        $scope.getMensagens = function(id) {
+            $http.get('passomensagem/allbyid/'+id).
+                success(function(data, status, headers, config) {
+                    $scope.mensagens = data;
+                });
+        };
+
+        $scope.getAllMensagens = function() {
+            $http.get('passomensagem/all').
+                success(function(data, status, headers, config) {
+                    console.log(data);
+                    $scope.selectMensagens = {
+                        repeatSelect: null,
+                        availableOptions: data
+                       };
+                });
+        };
+
+        $scope.getAllMensagens();
+        $scope.getMensagens($scope.passo.id);
+
+        $scope.save = function() {
+            $scope.passoMensagem.passo_id = $scope.passo.id;
+            $scope.passoMensagem.mensagem_id = $scope.selectMensagens.repeatSelect;
+                    $http({
+                       method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
+                       url     : $scope.btnSalvar == 'save' ? 'passomensagem' : 'passomensagem/'+ $scope.mensagem.id,
+                       data    : jQuery.param($scope.passoMensagem) ,  // pass in data as strings
+                       headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
+                    }).
+                    success(function(response){
+                        $scope.mensagems = {};
+                        location.reload();
+                    }).
+                    error(function(response){
+                       alert('Incomplete Form');
+                    });
+                 }
+
+        $scope.editar = function(id) {
+                    $scope.mensagem = $scope.mensagems[id];
+                    $scope.btnSalvar = 'edit';
+                 }
+
+        $scope.delete = function(id) {
+                       $http
+                            .delete('mensagem/'+id)
+                            .success(function(data){
+                              location.reload();
+                            })
+                            .error(function(data) {
+                              alert('Unable to delete');
+                           });
+                }
+  }]);
