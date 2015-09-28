@@ -61,13 +61,13 @@ app.controller('MensagemDocController', ['$scope', '$http', function ($scope, $h
             $http.get('passomensagem/allbyid/'+id).
                 success(function(data, status, headers, config) {
                     $scope.mensagens = data;
+                    $scope.tags = data;
                 });
         };
 
         $scope.getAllMensagens = function() {
             $http.get('passomensagem/all').
                 success(function(data, status, headers, config) {
-                    console.log(data);
                     $scope.selectMensagens = {
                         repeatSelect: null,
                         availableOptions: data
@@ -78,13 +78,25 @@ app.controller('MensagemDocController', ['$scope', '$http', function ($scope, $h
         $scope.getAllMensagens();
         $scope.getMensagens($scope.passo.id);
 
+        $scope.loadTags = function(query) {
+            return $http.get('passomensagem/all');
+        };
+
         $scope.save = function() {
             $scope.passoMensagem.passo_id = $scope.passo.id;
             $scope.passoMensagem.mensagem_id = $scope.selectMensagens.repeatSelect;
+
+            $scope.tt = [];
+            angular.forEach($scope.tags, function(value, key){
+                this.push({name: 'mensagem_id[]', value: value.id})
+            }, $scope.tt );
+
+            $scope.tt.push({name: 'passo_id', value: $scope.passo.id});
+
                     $http({
                        method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
                        url     : $scope.btnSalvar == 'save' ? 'passomensagem' : 'passomensagem/'+ $scope.mensagem.id,
-                       data    : jQuery.param($scope.passoMensagem) ,  // pass in data as strings
+                       data    : jQuery.param($scope.tt) ,  // pass in data as strings
                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).
                     success(function(response){

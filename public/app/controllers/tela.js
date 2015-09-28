@@ -60,7 +60,7 @@ app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http)
         $scope.getTelas = function(id) {
             $http.get('passotela/allbyid/'+id).
                 success(function(data, status, headers, config) {
-                $scope.tags = data;
+                    $scope.tags = data;
                     $scope.telas = data;
                 });
         };
@@ -86,12 +86,12 @@ app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http)
 
         $scope.save = function() {
 
-        $scope.tt = [];
-        angular.forEach($scope.tags, function(value, key){
-            this.push({name: 'tela_id[]', value: value.id})
+            $scope.tt = [];
+            angular.forEach($scope.tags, function(value, key){
+                this.push({name: 'tela_id[]', value: value.id})
 
-        }, $scope.tt );
-        console.log($scope.tt.push({name: 'passo_id', value: $scope.passo.id}));
+            }, $scope.tt );
+            console.log($scope.tt.push({name: 'passo_id', value: $scope.passo.id}));
 
             $scope.tela.passo_id = $scope.passo.id;
             $scope.tela.tela_id = $scope.selectTelas.repeatSelect;

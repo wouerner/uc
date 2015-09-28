@@ -1,5 +1,8 @@
 <div ng-controller="MensagemDocController as mensagemCtrl">
-    <p ng-repeat="mensagem in mensagens">
+    <tags-input ng-model="tags" display-property="tag">
+        <auto-complete source="loadTags($query)"></auto-complete>
+    </tags-input>
+    <!--p ng-repeat="mensagem in mensagens">
         <button class="btn btn-sm btn-danger btn-xs " ng-click="delete(mensagem.id)">
             <i class="fa fa-trash-o"></i> {{mensagem.tag}}
         </button>
@@ -12,6 +15,6 @@
                 </option>
             </select>
         </div>
+    </form-->
         <button class="btn btn-success btn-xs " ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
-    </form>
 </div>

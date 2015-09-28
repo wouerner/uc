@@ -50,11 +50,24 @@ class PassoFluxosController extends Controller
 
     public function store(Request $request)
     {
-        $passo = new PassoFluxos();
-        $passo->passo_id = $request->input('passo_id');
-        $passo->fluxo_id = $request->input('fluxo_id');
+        //$passo = new PassoFluxos();
+        //$passo->passo_id = $request->input('passo_id');
+        //$passo->fluxo_id = $request->input('fluxo_id');
 
-        $passo->save();
+        //$passo->save();
+
+        $passo = new PassoFluxos();
+
+        $passoFluxos = PassoFluxos::where('passo_id', $request->input('passo_id'))
+                ->delete();
+
+        if ($request->input('fluxo_id')) {
+            foreach($request->input('fluxo_id') as $id){
+                $insert[] = ['fluxo_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+            }
+
+            $passo->insert($insert);
+        }
 
         return response()->json(array(
                 'error' => false,

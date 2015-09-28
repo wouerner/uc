@@ -14,9 +14,11 @@ class RegraNegocioController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show()
+    public function show($id)
     {
-        return 'show';
+        $regra = RegraNegocio::where('id', $id)
+               ->get()->first();
+        return response()->json($regra);
     }
 
     /**

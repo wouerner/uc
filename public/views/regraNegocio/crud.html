@@ -1,5 +1,8 @@
 <div ng-controller="RegraNegocioDocController as regraCtrl">
-    <p ng-repeat="regra in regras">
+    <tags-input ng-model="tags" display-property="tag">
+        <auto-complete source="loadTags($query)"></auto-complete>
+    </tags-input>
+    <!--p ng-repeat="regra in regras">
         <button class="btn btn-sm btn-danger btn-xs " ng-click="delete(regra.id)">
             <i class="fa fa-trash-o"></i> {{regra.tag}}
         </button>
@@ -11,7 +14,8 @@
                         {{option.tag}}
                 </option>
             </select>
-        </div>
-        <button class="btn btn-success btn-xs " ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
     </form>
+        </div-->
+        <button class="btn btn-success btn-xs " ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
 </div>
+

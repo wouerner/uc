@@ -52,10 +52,21 @@ class PassoRegraNegocioController extends Controller
     public function store(Request $request)
     {
         $regra = new PassoRegraNegocio();
-        $regra->passo_id = $request->input('passo_id');
-        $regra->regra_negocio_id = $request->input('regra_negocio_id');
+        //$regra->passo_id = $request->input('passo_id');
+        //$regra->regra_negocio_id = $request->input('regra_negocio_id');
 
-        $regra->save();
+        //$regra->save();
+
+        PassoRegraNegocio::where('passo_id', $request->input('passo_id'))
+                ->delete();
+
+        if ($request->input('regra_negocio_id')) {
+            foreach($request->input('regra_negocio_id') as $id){
+                $insert[] = ['regra_negocio_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+            }
+
+            $regra->insert($insert);
+        }
 
         return response()->json(array(
                 'error' => false,

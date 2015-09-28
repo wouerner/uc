@@ -59,11 +59,14 @@ class PassoTelaController extends Controller
         $passoTela = PassoTela::where('passo_id', $request->input('passo_id'))
                 ->delete();
 
-        foreach($request->input('tela_id') as $id){
-            $insert[] = ['tela_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+        if ($request->input('tela_id')) {
+            foreach($request->input('tela_id') as $id){
+                $insert[] = ['tela_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+            }
+
+            $tela->insert($insert);
         }
 
-        $tela->insert($insert);
 
         return response()->json(array(
                 'error' => false,

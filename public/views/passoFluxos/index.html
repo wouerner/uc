@@ -1,5 +1,8 @@
 <div ng-controller="PassoFluxosController as passoCtrl">
-    <p ng-repeat="passoFluxo in passoFluxos">
+    <tags-input ng-model="tags" display-property="tag">
+        <auto-complete source="loadTags($query)"></auto-complete>
+    </tags-input>
+    <!--p ng-repeat="passoFluxo in passoFluxos">
         
         <button class="btn btn-xs btn-danger" ng-click="delete(passoFluxo.id, passo.id)">
             <i class="fa fa-trash-o"></i> {{passoFluxo.tag}}
@@ -15,6 +18,6 @@
                 </option>
             </select>
         </div>
+    </form-->
         <button class="btn btn-xs btn-success" ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
-    </form>
 </div>

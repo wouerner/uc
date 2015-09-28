@@ -1,6 +1,6 @@
 <div ng-controller="RegraNegocioController as ctrl" class="">
     <div class="well well-sm">
-        <table class="table table-condensed">
+        <table class="table table-condensed table-striped">
             <thead>
                 <th>#</th>
                 <th>Descrição</th>
@@ -10,7 +10,7 @@
             <tbody>
                 <tr ng-repeat="regra in regras">
                     <td>{{regra.id}}</td>
-                    <td>{{regra.descricao}}</td>
+                    <td ng-bind-html="html(regra.descricao)"></td>
                     <td>{{regra.tag}}</td>
                     <td>
                         <button class="btn btn-sm btn-primary" ng-click="editar($index)"><i class="fa fa-pencil"></i></button>
@@ -20,11 +20,12 @@
             </tbody>
         </table>
     <hr>
-    <form class="form-inline">
+    <form class="">
         <fieldset>
             <div class="form-group">
                 <label>Descrição:</label>
-                <input class="form-control" type="text" name="titulo" value="{{regra.descricao}}" ng-model="regra.descricao">
+                <text-angular name='textAngularEditor' 
+                    ng-model="regra.descricao" ta-toolbar="[['h1','h2','h3'],['bold','italics'],['ol','ul']]"></text-angular>
             </div>
             <div class="form-group">
                 <label>Tag:</label>

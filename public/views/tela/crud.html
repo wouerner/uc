@@ -1,21 +1,20 @@
 <div ng-controller="TelaDocController as telaCtrl">
-    <p ng-repeat="tela in telas">
+    <!--p ng-repeat="tela in telas">
         <button class="btn btn-sm btn-danger btn-xs " ng-click="delete(passo.id, tela.id)">
             <i class="fa fa-trash-o"></i> {{tela.tag}}
         </button>
-    </p>
+    </p-->
     <tags-input ng-model="tags" display-property="tag">
         <auto-complete source="loadTags($query)"></auto-complete>
     </tags-input>
-    {{tags}}
     <form>
-        <div class="form-group">
+        <!--div class="form-group">
             <select class="form-control" name="tela_id" ng-model="selectTelas.repeatSelect">
                 <option ng-repeat="option in selectTelas.availableOptions" value="{{option.id}}">
                         {{option.tag}}
                 </option>
             </select>
-        </div>
+        </div-->
         <button class="btn btn-success btn-xs " ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
     </form>
 </div>

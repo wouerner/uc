@@ -8,7 +8,7 @@
  *
  * Main module of the application.
  */
-var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTable", 'ngTagsInput']);
+var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTable", 'ngTagsInput','ngDialog']);
 
     app.controller('UcController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
         $scope.passo = {};
@@ -57,9 +57,9 @@ var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTabl
                            });
                 }
 
-                $scope.htmlTrust = function (html){
-                    return  $sce.trustAsHtml(html);
-                }
+        $scope.htmlTrust = function (html){
+            return  $sce.trustAsHtml(html);
+        }
     }])
     .controller('FluxoController', ['$scope', '$http', '$routeParams', function ($scope, $http, $routeParams) {
         $scope.fluxo = {};
@@ -120,6 +120,7 @@ var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTabl
             $http.get('passofluxos/all/'+id).
                 success(function(data, status, headers, config) {
                     $scope.passoFluxos = data;
+                    $scope.tags = data;
                 });
         };
 
@@ -130,14 +131,25 @@ var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTabl
 
         $scope.getPassoFluxos($scope.passo.id);
 
+        $scope.loadTags = function(query) {
+            return $scope.fluxos;
+        };
+
         $scope.save = function() {
            $scope.passoFluxo.passo_id = $scope.passo.id;
            $scope.passoFluxo.fluxo_id = $scope.selectFluxos.repeatSelect;
 
+            $scope.tt = [];
+            angular.forEach($scope.tags, function(value, key){
+                this.push({name: 'fluxo_id[]', value: value.id})
+            }, $scope.tt );
+
+            $scope.tt.push({name: 'passo_id', value: $scope.passo.id});
+
                     $http({
                        method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
                        url     : $scope.btnSalvar == 'save' ? 'passofluxos' : 'passofluxos/'+ $scope.passofluxo.id,
-                       data    : jQuery.param($scope.passoFluxo) ,  // pass in data as strings
+                       data    : jQuery.param($scope.tt) ,  // pass in data as strings
                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).
                     success(function(response){

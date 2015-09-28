@@ -53,11 +53,29 @@ class PassoMensagemController extends Controller
 
     public function store(Request $request)
     {
-        $regra = new PassoMensagem();
-        $regra->passo_id = $request->input('passo_id');
-        $regra->mensagem_id = $request->input('mensagem_id');
+        $passo = new PassoMensagem();
+        //$regra->passo_id = $request->input('passo_id');
+        //$regra->mensagem_id = $request->input('mensagem_id');
 
-        $regra->save();
+        //$regra->save();
+
+        //$tela = new PassoTela();
+        //$tela->passo_id = $request->input('passo_id');
+        //$tela->tela_id = $request->input('tela_id');
+
+        //$tela->save();
+
+        $passoMensagem = PassoMensagem::where('passo_id', $request->input('passo_id'))
+                ->delete();
+
+        if ($request->input('mensagem_id')) {
+            foreach($request->input('mensagem_id') as $id){
+                $insert[] = ['mensagem_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+            }
+
+            $passo->insert($insert);
+        }
+
 
         return response()->json(array(
                 'error' => false,

@@ -99,6 +99,10 @@ $app->get('regranegocio/allbyid/{id}', [
     'as' => 'regranegocio.allbyid', 'uses' => 'RegraNegocioController@allById'
 ]);
 
+$app->get('regranegocio/{id}', [
+    'as' => 'regranegocio.show', 'uses' => 'RegraNegocioController@show'
+]);
+
 $app->patch('regranegocio/{id}', [
     'as' => 'regranegocio.update', 'uses' => 'RegraNegocioController@update'
 ]);

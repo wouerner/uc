@@ -5,7 +5,7 @@
  * # AboutCtrl
  * Controller of the yoExemploApp
  */
-app.controller('RegraNegocioController', ['$scope', '$http', function ($scope, $http){
+app.controller('RegraNegocioController', ['$scope', '$http','$sce', function ($scope, $http, $sce){
         $scope.regra = {};
         $scope.regras = [];
         $scope.btnSalvar = 'save';
@@ -50,9 +50,12 @@ app.controller('RegraNegocioController', ['$scope', '$http', function ($scope, $
                               alert('Unable to delete');
                            });
                 }
+        $scope.html = function (html){
+            return  $sce.trustAsHtml(html);
+        }
   }]);
 
-app.controller('RegraNegocioDocController', ['$scope', '$http', function ($scope, $http){
+app.controller('RegraNegocioDocController', ['$scope', '$http', 'ngDialog',function ($scope, $http, ngDialog){
         $scope.regra = {};
         $scope.regras = [];
         $scope.btnSalvar = 'save';
@@ -61,6 +64,7 @@ app.controller('RegraNegocioDocController', ['$scope', '$http', function ($scope
             $http.get('passoregranegocio/allbyid/'+id).
                 success(function(data, status, headers, config) {
                     $scope.regras = data;
+                    $scope.tags = data;
                 });
         };
 
@@ -77,14 +81,23 @@ app.controller('RegraNegocioDocController', ['$scope', '$http', function ($scope
         $scope.getAllRegras();
         $scope.getRegras($scope.passo.id);
 
+        $scope.loadTags = function(query) {
+            return $http.get('regranegocio/all');
+        };
+
         $scope.save = function() {
-            $scope.regra.passo_id = $scope.passo.id;
-            $scope.regra.regra_negocio_id =$scope.selectRegras.repeatSelect;
-            console.log($scope.regra);
+
+            $scope.tt = [];
+            angular.forEach($scope.tags, function(value, key){
+                this.push({name: 'regra_negocio_id[]', value: value.id})
+
+            }, $scope.tt );
+
+            $scope.tt.push({name: 'passo_id', value: $scope.passo.id});
                     $http({
                        method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
                        url     : $scope.btnSalvar == 'save' ? 'passoregranegocio' : 'passoregranegocio/'+ $scope.regra.id,
-                       data    : jQuery.param($scope.regra) ,  // pass in data as strings
+                       data    : jQuery.param($scope.tt) ,  // pass in data as strings
                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).
                     success(function(response){
@@ -111,4 +124,22 @@ app.controller('RegraNegocioDocController', ['$scope', '$http', function ($scope
                               alert('Unable to delete');
                            });
                 }
+
+        $scope.show = function (id) {
+                    ngDialog.open({ template: 'views/regraNegocio/dialog.html',
+                                    controller: ['$scope', '$http', 'dep', '$sce',
+                                        function($scope, $http, dep, $sce) {
+                                            $scope.html = function (html){
+                                                return  $sce.trustAsHtml(html);
+                                            }
+
+                                            $scope.regra_negocial = dep.data;
+                                        }],
+                                    resolve: {
+                                            dep: function depFactory() {
+                                                return $http.get('regranegocio/'+id);
+                                            }
+                                        }
+                                  });
+        }
   }]);

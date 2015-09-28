@@ -1,6 +1,7 @@
     app.config(['$routeProvider', function ($routeProvider){
         $routeProvider
         .when('/uc/:id', {templateUrl: 'views/index.html'})
+        .when('/uc/:id/show', {templateUrl: 'views/documento/show.html'})
         .when('/index', { controller: 'DocumentoController', templateUrl: 'views/documento/index.html'})
         .when('/regranegocio', { controller: 'RegraNegocioController', templateUrl: 'views/regraNegocio/index.html'})
         .when('/mensagem', { controller: 'MensagemController', templateUrl: 'views/mensagem/index.html'})
