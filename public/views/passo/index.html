@@ -1,6 +1,6 @@
 <div ng-controller="UcController as ctrl" class="">
     <div class="well well-sm">
-        <table class="table table-condensed">
+        <table class="table table-condensed table-striped table-bordered">
             <thead>
                 <th>#</th>
                 <th>Descrição</th>
@@ -8,12 +8,15 @@
                 <th>Regras de Negocio</th>
                 <th>Mensagem</th>
                 <th>Tela</th>
-                <th>Ações</th>
             </thead>
             <tbody>
                 <tr ng-repeat="passo in passos">
                     <td>{{passo.id}}</td>
-                    <td ng-bind-html="htmlTrust(passo.descricao)"></td>
+                    <td >
+                        <div ng-bind-html="htmlTrust(passo.descricao)"></div>
+                        <button class="btn btn-sm btn-primary" ng-click="editar($index)"><i class="fa fa-pencil"></i></button>
+                        <button class="btn btn-sm btn-danger" ng-click="delete(passo.id)"><i class="fa fa-trash-o"></i></button>
+                    </td>
                     <td>
                         <div ng-include src="'views/passoFluxos/index.html'"></div>
                     </td>
@@ -25,10 +28,6 @@
                     </td>
                     <td>
                         <div ng-include src="'views/tela/crud.html'"></div>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" ng-click="editar($index)"><i class="fa fa-pencil"></i></button>
-                        <button class="btn btn-sm btn-danger" ng-click="delete(passo.id)"><i class="fa fa-trash-o"></i></button>
                     </td>
                 <tr>
             </tbody>

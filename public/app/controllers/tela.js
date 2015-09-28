@@ -60,6 +60,7 @@ app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http)
         $scope.getTelas = function(id) {
             $http.get('passotela/allbyid/'+id).
                 success(function(data, status, headers, config) {
+                $scope.tags = data;
                     $scope.telas = data;
                 });
         };
@@ -77,13 +78,28 @@ app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http)
         $scope.getAllTelas();
         $scope.getTelas($scope.passo.id);
 
+        $scope.loadTags = function(query) {
+            return $http.get('tela/all');
+        };
+
+
+
         $scope.save = function() {
+
+        $scope.tt = [];
+        angular.forEach($scope.tags, function(value, key){
+            this.push({name: 'tela_id[]', value: value.id})
+
+        }, $scope.tt );
+        console.log($scope.tt.push({name: 'passo_id', value: $scope.passo.id}));
+
             $scope.tela.passo_id = $scope.passo.id;
             $scope.tela.tela_id = $scope.selectTelas.repeatSelect;
                     $http({
                        method  : $scope.btnSalvar == 'save' ? 'POST' : 'PATCH',
                        url     : $scope.btnSalvar == 'save' ? 'passotela' : 'passotela/'+ $scope.mensagem.id,
-                       data    : jQuery.param($scope.tela) ,  // pass in data as strings
+                       //data    : jQuery.param($scope.tela) ,  // pass in data as strings
+                       data    : jQuery.param($scope.tt) ,  // pass in data as strings
                        headers : { 'Content-Type': 'application/x-www-form-urlencoded' }  // set the headers so angular passing info as form data (not request payload)
                     }).
                     success(function(response){

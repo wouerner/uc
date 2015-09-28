@@ -51,10 +51,19 @@ class PassoTelaController extends Controller
     public function store(Request $request)
     {
         $tela = new PassoTela();
-        $tela->passo_id = $request->input('passo_id');
-        $tela->tela_id = $request->input('tela_id');
+        //$tela->passo_id = $request->input('passo_id');
+        //$tela->tela_id = $request->input('tela_id');
 
-        $tela->save();
+        //$tela->save();
+
+        $passoTela = PassoTela::where('passo_id', $request->input('passo_id'))
+                ->delete();
+
+        foreach($request->input('tela_id') as $id){
+            $insert[] = ['tela_id'=>$id, 'passo_id' => $request->input('passo_id') ];
+        }
+
+        $tela->insert($insert);
 
         return response()->json(array(
                 'error' => false,
