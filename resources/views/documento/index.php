@@ -32,6 +32,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.5.1/js/ngDialog.min.js"></script>
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-file-upload/1.1.6/angular-file-upload.min.js"></script>
 
         <script src="/app/app.js"></script>
         <script src="/app/routes.js"></script>

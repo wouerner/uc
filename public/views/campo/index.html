@@ -33,5 +33,20 @@
             <button class="btn btn-success" ng-click="save()" ng-model="btnSalvar" value="{{btnSalvar}}">Salvar</button>
         </fieldset>
     </form>
+                        <div class="form-group">
+                            <label>
+                                Imagem:
+                            </label>  
+                            <input class="" type="file" nv-file-select uploader="tela.upload"/>
+                        </div>
+                        <ul>
+                            <li ng-repeat="item in tela.upload.queue">
+                                Name: <span ng-bind="item.file.name"></span><br/>
+                                <button class="btn btn-default" ng-click="item.upload()">upload</button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </li>
+                        </ul>
     </div>
 </div>

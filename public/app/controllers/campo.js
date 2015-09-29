@@ -5,7 +5,7 @@
  * # AboutCtrl
  * Controller of the yoExemploApp
  */
-app.controller('CampoController', ['$scope', '$http','$routeParams', function ($scope, $http, $routeParams){
+app.controller('CampoController', ['$scope', '$http','$routeParams','FileUploader', function ($scope, $http, $routeParams, FileUploader){
         $scope.campo = {};
         $scope.campos = [];
         $scope.btnSalvar = 'save';

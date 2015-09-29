@@ -8,7 +8,8 @@
  *
  * Main module of the application.
  */
-var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTable", 'ngTagsInput','ngDialog']);
+var app = angular.module('ucApp',['ngRoute', 'ngSanitize', 'textAngular',"ngTable",
+                         'ngTagsInput','ngDialog','angularFileUpload']);
 
     app.controller('UcController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
         $scope.passo = {};

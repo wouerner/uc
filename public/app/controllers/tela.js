@@ -5,7 +5,7 @@
  * # AboutCtrl
  * Controller of the yoExemploApp
  */
-app.controller('TelaController', ['$scope', '$http', function ($scope, $http){
+app.controller('TelaController', ['$scope', '$http','FileUploader', function ($scope, $http, FileUploader){
         $scope.tela = {};
         $scope.telas = [];
         $scope.btnSalvar = 'save';
@@ -14,10 +14,21 @@ app.controller('TelaController', ['$scope', '$http', function ($scope, $http){
             $http.get('tela/all').
                 success(function(data, status, headers, config) {
                     $scope.telas = data;
+
+                    $scope.testes= [];
+                    angular.forEach($scope.telas, function(value, key){
+                        this.push({id: value.id, titulo: value.titulo,
+                                  tag: value.tag, upload: new FileUploader()});
+                    }, $scope.testes );
+                    console.log($scope.testes);
+
+                    $scope.telas = $scope.testes;
                 });
         };
 
+
         $scope.getTelas();
+
 
         $scope.save = function() {
                     $http({
@@ -50,6 +61,7 @@ app.controller('TelaController', ['$scope', '$http', function ($scope, $http){
                               alert('Unable to delete');
                            });
                 }
+        $scope.uploader = new FileUploader();
   }]);
 
 app.controller('TelaDocController', ['$scope', '$http', function ($scope, $http){

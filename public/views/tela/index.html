@@ -16,6 +16,21 @@
                         <button class="btn btn-sm btn-primary" ng-click="editar($index)"><i class="fa fa-pencil"></i></button>
                         <button class="btn btn-sm btn-danger" ng-click="delete(tela.id)"><i class="fa fa-trash-o"></i></button>
                         <a href="#/campo/{{tela.id}}" class="btn btn-default"><i class="fa fa-wrench"></i></a>
+                        <div class="form-group">
+                            <label>
+                                Imagem:
+                            </label>  
+                            <input class="form-control" type="file" nv-file-select uploader="tela.upload"/>
+                        </div>
+                        <ul>
+                            <li ng-repeat="item in tela.upload.queue">
+                                Name: <span ng-bind="item.file.name"></span><br/>
+                                <button class="btn btn-default" ng-click="item.upload()">upload</button>
+                                <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                                    <span class="glyphicon glyphicon-trash"></span> Remove
+                                </button>
+                            </li>
+                        </ul>
                     </td>
                 <tr>
             </tbody>
